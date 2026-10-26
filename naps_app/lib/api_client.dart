@@ -35,7 +35,7 @@ class ApiClient {
 
   static const defaultBaseUrl = String.fromEnvironment(
     'API_BASE_URL',
-    defaultValue: 'http://10.0.2.2:4000/api',
+    defaultValue: 'https://naps-api.m-osama-dev.workers.dev/api',
   );
   static const _baseUrlKey = 'naps.api-base-url';
   final http.Client _httpClient;
