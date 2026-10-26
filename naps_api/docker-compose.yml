@@ -1,0 +1,29 @@
+services:
+  database:
+    image: mongo:8.0
+    restart: unless-stopped
+    volumes:
+      - naps-data:/data/db
+    healthcheck:
+      test: ["CMD", "mongosh", "--quiet", "--eval", "db.runCommand({ ping: 1 }).ok"]
+      interval: 10s
+      timeout: 5s
+      retries: 8
+
+  api:
+    build: .
+    restart: unless-stopped
+    ports:
+      - "4000:4000"
+    environment:
+      PORT: "4000"
+      MONGODB_URI: mongodb://database:27017/naps
+      JWT_SECRET: ${JWT_SECRET}
+      BOOTSTRAP_SECRET: ${BOOTSTRAP_SECRET}
+      CORS_ORIGIN: ${CORS_ORIGIN}
+    depends_on:
+      database:
+        condition: service_healthy
+
+volumes:
+  naps-data:

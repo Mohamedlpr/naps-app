@@ -1,0 +1,24 @@
+# Flutter and Android build output
+naps_app/.dart_tool/
+naps_app/build/
+naps_app/about-me.md
+naps_app/.flutter-plugins
+naps_app/.flutter-plugins-dependencies
+naps_app/android/.gradle/
+naps_app/android/build/
+naps_app/android/local.properties
+naps_app/android/key.properties
+naps_app/android/app/*.jks
+naps_app/android/app/*.keystore
+naps_app/android/*.iml
+
+# Node dependencies and local secrets
+naps_api/node_modules/
+naps_api/.env
+naps_api/npm-debug.log*
+
+# IDE and operating system files
+.idea/
+.vscode/
+Thumbs.db
+Desktop.ini
