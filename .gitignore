@@ -14,6 +14,8 @@ naps_app/android/*.iml
 
 # Node dependencies and local secrets
 naps_api/node_modules/
+naps_api/.wrangler/
+naps_api/.dev.vars*
 naps_api/.env
 naps_api/npm-debug.log*
 

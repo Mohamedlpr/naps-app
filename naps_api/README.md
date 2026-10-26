@@ -30,10 +30,10 @@ Deploy the API behind HTTPS and connect it to a managed MongoDB deployment. Set 
 
 This repository contains the application code, not a hosted API or a MongoDB account. The shared app becomes live when the API and database are deployed and the Flutter client is configured with that API address.
 
-## Free pilot deployment with Render and MongoDB Atlas
+## Free pilot deployment with Cloudflare Workers and MongoDB Atlas
 
-This repository includes a Render Blueprint at the repository root. Create an Atlas Free cluster, add a database user, and allow network access from `0.0.0.0/0` so Render can connect. Use a strong unique password in the MongoDB connection string; enter that URI only in Render's secret prompt.
+The API can run as a Cloudflare Worker using Express and Mongoose 9. Create an Atlas Free cluster and a database user with a strong unique password. Allow network access from `0.0.0.0/0` because Workers outbound addresses are not fixed; keep the database user restricted to the application's database.
 
-Push this repository to a private GitHub repository, then in Render choose **New > Blueprint** and connect that repository. Render reads `render.yaml` and prompts for `MONGODB_URI` and `BOOTSTRAP_SECRET`; enter both in the Render dashboard, not in source control. Render generates the JWT secret. Once deployment is healthy, copy the HTTPS service URL and set the app's API address to `<service-url>/api` from the connection setup on the sign-in screen.
+Create a Worker from the `naps_api` directory in this repository. Set the build command to `npm ci` and the deploy command to `npm run deploy`. The `wrangler.toml` file selects the free `workers.dev` endpoint and includes non-secret runtime settings. In the Cloudflare Worker settings, add `MONGODB_URI`, `JWT_SECRET`, and `BOOTSTRAP_SECRET` as secrets. Generate two different random values of at least 32 characters for `JWT_SECRET` and `BOOTSTRAP_SECRET`.
 
-Use the bootstrap secret once to create the organization administrator, then rotate or remove it in Render. Free Render services sleep after inactivity, so the first request may take about a minute. Atlas Free storage is limited; this setup is for a pilot and does not include a production backup plan.
+After the Worker is deployed, its `https://<worker-name>.<account-subdomain>.workers.dev` address is the API root. Set the app's API address to that URL followed by `/api` from the connection setup on the sign-in screen. Use the bootstrap secret once to create the organization administrator, then remove the bootstrap secret from Worker settings. Cloudflare's free plan has request and CPU limits; Atlas Free has limited storage and may pause after extended inactivity, so this is a pilot deployment.
